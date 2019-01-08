@@ -19,20 +19,6 @@ class QueueFactory
     public const CHANGE_VERSION = '5.7';
 
     /**
-     * Swoole task queue class
-     *
-     * @const string
-     */
-    public const QUEUE_CLASS = 'SwooleTW\Http\Task\SwooleTaskQueue';
-
-    /**
-     * Swoole task queue path
-     *
-     * @const string
-     */
-    public const QUEUE_CLASS_PATH = __DIR__ . '/SwooleTaskQueue.php';
-
-    /**
      * @param \Swoole\Http\Server $server
      * @param string $version
      *
@@ -63,45 +49,8 @@ class QueueFactory
     public static function getClass($version): string
     {
         return static::hasBreakingChanges($version)
-            ? __DIR__ . '/../../stubs/5.7/SwooleTaskQueue.stub'
-            : __DIR__ . '/../../stubs/5.6/SwooleTaskQueue.stub';
-    }
-
-    /**
-     * @param string $stub
-     * @param bool $rewrite
-     *
-     * @return string
-     */
-    public static function copy(string $stub, bool $rewrite = false): string
-    {
-        if (! file_exists(static::QUEUE_CLASS_PATH) || $rewrite) {
-            copy($stub, static::QUEUE_CLASS_PATH);
-        }
-
-        return static::QUEUE_CLASS;
-    }
-
-    /**
-     * @param string $version
-     *
-     * @return bool
-     */
-    protected static function isFileVersionMatch(string $version): bool
-    {
-        try {
-            $fileVersion = null;
-            if (class_exists(self::QUEUE_CLASS)) {
-                $ref = new \ReflectionClass(self::QUEUE_CLASS);
-                if (preg_match(FW::VERSION_WITHOUT_HOT_FIX, $ref->getDocComment(), $result)) {
-                    $fileVersion = Arr::first($result);
-                }
-            }
-
-            return version_compare($fileVersion, $version, '>=');
-        } catch (\Exception $e) {
-            return false;
-        }
+            ? '\SwooleTW\Http\Task\Queue\V5_7\SwooleTaskQueue'
+            : '\SwooleTW\Http\Task\Queue\V5_6\SwooleTaskQueue';
     }
 
     /**

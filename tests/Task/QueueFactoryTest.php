@@ -22,6 +22,6 @@ class QueueFactoryTest extends TestCase
         $search = version_compare($version, '5.7', '>=') ? '5.7' : '5.6';
         $class = QueueFactory::getClass($version);
 
-        $this->assertTrue(Str::contains($class, $search));
+        $this->assertTrue(Str::contains($class, Str::replaceFirst('.', '_', $search)));
     }
 }
