@@ -82,7 +82,7 @@ class ConnectorFactory
             $fileVersion = null;
             if (class_exists(self::CONNECTOR_CLASS)) {
                 $ref = new \ReflectionClass(self::CONNECTOR_CLASS);
-                if (preg_match(FW::VERSION_WITHOUT_BUG_FIX, $ref->getDocComment(), $result)) {
+                if (preg_match(FW::VERSION_WITHOUT_HOT_FIX, $ref->getDocComment(), $result)) {
                     $fileVersion = Arr::first($result);
                 }
             }

@@ -20,38 +20,8 @@ class QueueFactoryTest extends TestCase
         $version = FW::version();
 
         $search = version_compare($version, '5.7', '>=') ? '5.7' : '5.6';
-        $stub = QueueFactory::stub($version);
+        $class = QueueFactory::getClass($version);
 
-        $this->assertTrue(Str::contains($stub, $search));
-    }
-
-    public function testItCanCompareNeededStubByVersion()
-    {
-        $version = '5.6';
-        $search = '5.7';
-
-        $stub = QueueFactory::stub($version);
-
-        $this->assertNotTrue(Str::contains($stub, $search));
-    }
-
-    public function testItCanMakeNeededQueueByVersion()
-    {
-        $version = FW::version();
-
-        $server = $this->getServer();
-        $queue = QueueFactory::make($server, $version);
-
-        $this->assertInstanceOf(QueueFactory::QUEUE_CLASS, $queue);
-    }
-
-    protected function getServer()
-    {
-        $server = m::mock('server');
-//        $server->shouldReceive('on');
-        $server->taskworker = false;
-        $server->master_pid = -1;
-
-        return $server;
+        $this->assertTrue(Str::contains($class, $search));
     }
 }

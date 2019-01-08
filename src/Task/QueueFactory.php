@@ -40,8 +40,12 @@ class QueueFactory
      */
     public static function make($server, string $version): Queue
     {
-        $isMatch = static::isFileVersionMatch($version);
-        $class = static::copy(static::stub($version), ! $isMatch);
+//        $isMatch = static::isFileVersionMatch($version);
+//        $class =
+//        $class = static::copy(static::stub($version), ! $isMatch);
+        $class = static::hasBreakingChanges($version)
+            ? '\SwooleTW\Http\Task\Queue\V5_7\SwooleTaskQueue'
+            : '\SwooleTW\Http\Task\Queue\V5_6\SwooleTaskQueue';
 
         return new $class($server);
     }
@@ -52,6 +56,11 @@ class QueueFactory
      * @return string
      */
     public static function stub(string $version): string
+    {
+        return static::getClass($version);
+    }
+
+    public static function getClass($version): string
     {
         return static::hasBreakingChanges($version)
             ? __DIR__ . '/../../stubs/5.7/SwooleTaskQueue.stub'
@@ -84,7 +93,7 @@ class QueueFactory
             $fileVersion = null;
             if (class_exists(self::QUEUE_CLASS)) {
                 $ref = new \ReflectionClass(self::QUEUE_CLASS);
-                if (preg_match(FW::VERSION_WITHOUT_BUG_FIX, $ref->getDocComment(), $result)) {
+                if (preg_match(FW::VERSION_WITHOUT_HOT_FIX, $ref->getDocComment(), $result)) {
                     $fileVersion = Arr::first($result);
                 }
             }

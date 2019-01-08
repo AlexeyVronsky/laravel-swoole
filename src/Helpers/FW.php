@@ -32,11 +32,11 @@ final class FW
     public const VERSION_FULL = '/\s*(?:\d+\.?)+/i';
 
     /**
-     * Version without bugfix regular expression
+     * Version without hot fix regular expression
      *
      * @const string
      */
-    public const VERSION_WITHOUT_BUG_FIX = '/\s*(?:\d+\.*?){2}/i';
+    public const VERSION_WITHOUT_HOT_FIX = '/\s*(?:\d+\.*?){2}/i';
 
     /**
      * Returns true if current Framework in types
@@ -67,7 +67,7 @@ final class FW
      *
      * @return string
      */
-    public static function version(string $expression = self::VERSION_WITHOUT_BUG_FIX): string
+    public static function version(string $expression = self::VERSION_WITHOUT_HOT_FIX): string
     {
         if (static::is(static::LARAVEL)) {
             return static::extractVersion(constant('Illuminate\Foundation\Application::VERSION'), $expression);
