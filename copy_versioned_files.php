@@ -13,9 +13,9 @@ $noColor = "\033[0m";
 $stubs = [];
 
 /* Copy queue class */
-$stub = QueueFactory::stub($version);
-QueueFactory::copy($stub, true);
-$stubs[] = $stub;
+//$stub = QueueFactory::stub($version);
+//QueueFactory::copy($stub, true);
+//$stubs[] = $stub;
 
 /* Copy connector class */
 $stub = ConnectorFactory::stub($version);
